@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+{% load static %}
+{% with request.resolver_match.url_name as url_name %}
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Paper Repository</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <!--- StyleSheet --->
+    <link href="{% static '/css/googlefont.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href='{% static "css/bootstrap.min.css" %}'>
+    <link href='{% static "/aos/aos.css" %}' rel="stylesheet">
+    <link href='{% static "/remixicon/remixicon.css" %}' rel="stylesheet">
+    <link href='{% static "/css/style.css" %}' rel="stylesheet">
+</head>
+
+<body>
+    <!-- ======= Header ======= -->
+    <header class="fixed-top topMenuBar"></header>
+    <header class="paper-header topbar">
+        <!-- <img src="{% static '/img/logo.png' %}" class="azadi" !important alt="" style="float:left; display:inline;padding:20px 10px 10px 10px;width: 400 px; max-height: 172px;"> -->
+        <div class="left-container">
+            <div class="site-title">
+                <strong>राष्ट्रीय ध्रुवीय एवं समुद्री अनुसंधान केन्द्र<br>
+                    पृथ्वी विज्ञान मंत्रालय, भारत सरकार</strong>
+                <span>NATIONAL CENTRE FOR POLAR AND OCEAN RESEARCH<br>
+                    Ministry of Earth Sciences, Government of India</span>
+            </div>
+        </div>
+        <img src="{% static '/img/NCPOR.png' %}" class="azadi" !important alt=""
+            style="float:right; display:inline;padding:20px 10px 10px 10px;width: 172px; max-height: 172px;">
+    </header><!-- End Header -->
+    <nav class="navbar navbar-expand-lg order-last order-lg-0">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">---
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link {% if url_name == 'homepage' %}active{% endif %}"
+                            href="{% url 'homepage' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if url_name == 'paper' %}active{% endif %}"
+                            href="{% url 'paper' %}">Paper</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            {{user.first_name}} {{user.last_name}}
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item">{{user.email}}</a></li>
+                            <li><a class="dropdown-item" href="/admin">Admin Panel</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <form id="logout-form" method="post" action="{% url 'admin:logout' %}">
+                                    {% csrf_token %}
+                            <li><button class="dropdown-item" type="submit">Logout</button></li>
+                            </form>
+                    </li>
+                </ul>
+                </li>
+                {% else %}
+                <li><a class="nav-link scrollto {% if url_name == 'paper' %}active{% endif %}"
+                        href="{% url 'admin:login' %}">Login</a></li>
+                {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- .navbar -->
+    {% block content %}
+    <!-- ======= Hero Section ======= -->
+    <section id="hero" class="d-flex justify-content-center">
+        <div class="container" data-aos="fade-up">
+
+            <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="150">
+                <div class="col-xl-6 col-lg-8">
+                    <h1>Paper Repository<span>.</span></h1>
+                    <h2>NCPOR paper library</h2>
+                </div>
+            </div>
+
+            <div class="row gy-4 mt-5 justify-content-center" data-aos="zoom-in" data-aos-delay="250">
+                <div class="col-xl-2 col-md-4">
+                    <div class="icon-box">
+                        <i class="ri-store-line"></i>
+                        <h3><a href="">24<br>Publications</a></h3>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-md-4">
+                    <div class="icon-box">
+                        <i class="ri-bar-chart-box-line"></i>
+                        <h3><a href="">100<br>Papers</a></h3>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-md-4">
+                    <div class="icon-box">
+                        <i class="ri-calendar-todo-line"></i>
+                        <h3><a href="">500<br>Authors</a></h3>
+                    </div>
+                </div>
+                <!-- <div class="col-xl-2 col-md-4">
+                    <div class="icon-box">
+                        <i class="ri-paint-brush-line"></i>
+                        <h3><a href="">Magni Dolores</a></h3>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-md-4">
+                    <div class="icon-box">
+                        <i class="ri-database-2-line"></i>
+                        <h3><a href="">Nemos Enimade</a></h3>
+                    </div>
+                </div> -->
+            </div>
+
+        </div>
+    </section><!-- End Hero -->
+    {% endblock %}
+
+    <!--- JavaScript --->
+    <script type="text/javascript" src='{% static "js/bootstrap.bundle.min.js" %}'></script>
+    <script src="{% static 'js/htmx.min.js' %}" defer></script>
+    <script src='{% static "/aos/aos.js" %}'></script>
+    <script src='{% static "/glightbox/js/glightbox.min.js" %}'></script>
+    <script src='{% static "/swiper/swiper-bundle.min.js" %}'></script>
+    <script src='{% static "/js/main.js" %}'></script>
+</body>
+{% endwith %}
+
+</html>
