@@ -6,23 +6,52 @@
     <div class="container" data-aos="fade-up">
         <div class="row">
             <div class="content text-center">
-                <br>
                 <h1>Add Papers</h1>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-left" data-aos-delay="100">
+            <div class="col-xs-12 col-sm-12 col-lg-12" data-aos="fade-left" data-aos-delay="100">
                 <form method="POST">
                     {% csrf_token %}
-                    <table>
-                        {{form.as_table}}
-                    </table>
-                    <button>Submit</button>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="table-responsive">
+                                <div><b>Paper Details:</b></div>
+                                <table class="table">
+                                    {{paperForm.as_table}}
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="table-responsive">
+                                <div><b>First Author Details</b></div>
+                                <table class="table">
+                                    {{authorForm.as_table}}
+                                </table>
+                            </div>
+                            <div class="table-responsive">
+                                <b>Co-Author Details (1):</b>
+                                <div id="author">
+                                    <table class="table">
+                                        {{authorForm.as_table}}
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6" id="co_author"></div>
+                    </div>
+                    <div class="text-center">
+                        <a class="btn btn-secondary" onclick="addauthor()">Add Co-Author</a>
+                        <button class="btn btn-primary">Submit</button>
+                        <a class="btn btn-secondary" onclick="test()">Test</a>
+                    </div>
                 </form>
             </div>
-            <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content" data-aos="fade-right" data-aos-delay="100">
+            <!-- <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content" data-aos="fade-right" data-aos-delay="100">
                 <img src="{% static '/img/about.jpg' %}" class="img-fluid" alt="">
-            </div>
+            </div> -->
         </div>
     </div>
 </section>
