@@ -6,4 +6,4 @@ def homepage(request):
     publication = Paper.objects.values('publication').distinct().count()
     author = Author.objects.values('email').distinct().count()
     context = {"papers":papers,"publications":publication, "authors":author}
-    return render(request,"base.html",context)
+    return render(request,"home.html",context)
