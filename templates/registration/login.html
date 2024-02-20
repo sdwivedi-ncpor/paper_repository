@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<main id="main">
+    <!-- ======= About Section ======= -->
+    <section id="about" class="about justify-content-center">
+        <div class="container" data-aos="fade-up">
+            <div class="row justify-content-center">
+                <div class="col-lg-3 order-1 order-lg-2" data-aos="fade-left" data-aos-delay="100">
+                    <img src="{% static '/img/NCPOR.png' %}" class="img-fluid" alt="">
+                </div>
+                <div class="col-lg-8 pt-4 pt-lg-0 order-2 order-lg-1 content" data-aos="fade-right"
+                    data-aos-delay="100">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class=" col-12">
+                                <form method="POST" action="">
+                                    {% csrf_token %}
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            {{form.as_table}}
+                                        </table>
+                                    </div>
+                                    <div class="text-center">
+                                        <button class="btn btn-primary">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- <div class="col-12">
+                                <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-center mt-5">
+                                    <a href="" class="link-secondary text-decoration-none">Create new
+                                        account</a>
+                                    <a href="" class="link-secondary text-decoration-none">Forgot
+                                        password</a>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section><!-- End About Section -->
+</main>
+{% endblock %}

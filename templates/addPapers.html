@@ -6,46 +6,59 @@
     <div class="container" data-aos="fade-up">
         <div class="row">
             <div class="content text-center">
-                <h1>Add Papers</h1>
+                <h1>Add Paper Details</h1><br><hr>
             </div>
         </div>
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-lg-12" data-aos="fade-left" data-aos-delay="100">
-                <form method="POST">
+                <form action="{% url 'savepaper' %}" method="POST">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="table-responsive">
-                                <div><b>Paper Details:</b></div>
-                                <table class="table">
-                                    {{paperForm.as_table}}
-                                </table>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <div class="text-center"><b>Paper Details:</b></div>
+                                        <table class="table">
+                                            {{paperForm.as_table}}
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="table-responsive">
-                                <div><b>First Author Details</b></div>
-                                <table class="table">
-                                    {{authorForm.as_table}}
-                                </table>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <div class="text-center"><b>First Author Details</b></div>
+                                        <table class="table">
+                                            {{authorForm.as_table}}
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="table-responsive">
-                                <b>Co-Author Details (1):</b>
-                                <div id="author">
-                                    <table class="table">
-                                        {{authorForm.as_table}}
-                                    </table>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <div class="text-center"><b>Co-Author Details (1):</b></div>
+                                        <div id="author">
+                                            <table class="table">
+                                                {{authorForm.as_table}}
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6" id="co_author"></div>
+                    <div class="row" id="co_author">
+
                     </div>
+                    <br>
+                    <hr>
                     <div class="text-center">
-                        <a class="btn btn-secondary" onclick="addauthor()">Add Co-Author</a>
+                        <a class="btn btn-primary" onclick="addauthor()">Add Co-Author</a>
                         <button class="btn btn-primary">Submit</button>
-                        <a class="btn btn-secondary" onclick="test()">Test</a>
                     </div>
                 </form>
             </div>

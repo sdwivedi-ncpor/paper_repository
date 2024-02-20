@@ -6,8 +6,8 @@ class PaperForm(forms.Form):
     publication_date = forms.DateField(label="Date of Publish", widget=forms.DateInput(attrs={'type': 'date','class':"form-control"}))
     publication = forms.CharField(label="Publication", widget=forms.TextInput(attrs={'class':"form-control"}))
     doi = forms.CharField(label="DOI", widget=forms.TextInput(attrs={'class':"form-control"}))
-    citation = forms.FloatField(label="Citation", widget=forms.NumberInput(attrs={'class':"form-control"}))
-    impact_factor = forms.FloatField(label="Impact Factor", widget=forms.NumberInput(attrs={'class':"form-control"}))
+    citation = forms.FloatField(label="Citation", widget=forms.NumberInput(attrs={'class':"form-control",'step': 0.5}))
+    impact_factor = forms.FloatField(label="Impact Factor", widget=forms.NumberInput(attrs={'class':"form-control",'step': 0.5}))
     
 class AuthorForm(forms.Form):
     first_name = forms.CharField(label="First Name", widget=forms.TextInput(attrs={'class':"form-control"}))

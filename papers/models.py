@@ -10,7 +10,7 @@ class Paper(models.Model):
     citation = models.FloatField(null=True, blank=True)
     impact_factor = models.FloatField(null=True, blank=True)
     def __str__(self):
-        return self.title / ' | ' / self.publication
+        return self.title + ' | ' + self.publication
     class Meta:
         ordering = ('date_created',)
     
@@ -22,7 +22,14 @@ class Author(models.Model):
     profile = models.URLField(null=True, blank=True)
     phone = models.IntegerField(null=True, blank=True)
     paper = models.ForeignKey(Paper, on_delete=models.PROTECT,null=False, blank=False)
+    author_type_choices = {
+        "FIRST":"First Author",
+        "CO":"Co-Author"
+    }
+    author_type = models.CharField(max_length=9,
+                  choices=author_type_choices,
+                  default="CO")
     def __str__(self):
-        return self.first_name / ' | ' / self.last_name
+        return self.first_name + ' ' + self.last_name + ' | ' + self.author_type_choices[self.author_type]
     class Meta:
         ordering = ('date_created',)
