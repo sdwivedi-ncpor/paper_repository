@@ -13,6 +13,9 @@ class Paper(models.Model):
         return self.title + ' | ' + self.publication
     class Meta:
         ordering = ('date_created',)
+    def get_publication_date(self):
+        from datetime import datetime # idk if this is required, I assume so?
+        return self.publication_date.strftime("%d-%b-%Y")
     
 class Author(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)

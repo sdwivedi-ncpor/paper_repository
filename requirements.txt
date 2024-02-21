@@ -1,5 +1,6 @@
 psycopg2
 whitenoise
-django-bootstrap5
-django-bootstrap-icons
-django-htmx
+# django-bootstrap5
+# django-bootstrap-icons
+# django-htmx
+django-session-timeout

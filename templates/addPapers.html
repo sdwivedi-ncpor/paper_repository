@@ -1,12 +1,15 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<!-- ======= About Section ======= -->
+<script>
+    let html = `<table class="table">{{authorForm.as_table}}</table>`
+</script>
 <section id="about" class="about">
     <div class="container" data-aos="fade-up">
         <div class="row">
             <div class="content text-center">
-                <h1>Add Paper Details</h1><br><hr>
+                <h1>Add Paper Details</h1><br>
+                <hr>
             </div>
         </div>
         <div class="row">
@@ -14,7 +17,7 @@
                 <form action="{% url 'savepaper' %}" method="POST">
                     {% csrf_token %}
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="table-responsive">
@@ -26,6 +29,9 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <hr>
+                    <div class="row" id="authors">
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-body">
@@ -37,22 +43,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <div class="text-center"><b>Co-Author Details (1):</b></div>
-                                        <div id="author">
-                                            <table class="table">
-                                                {{authorForm.as_table}}
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
-                    </div>
-                    <div class="row" id="co_author">
-
                     </div>
                     <br>
                     <hr>
@@ -62,10 +53,72 @@
                     </div>
                 </form>
             </div>
-            <!-- <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content" data-aos="fade-right" data-aos-delay="100">
-                <img src="{% static '/img/about.jpg' %}" class="img-fluid" alt="">
-            </div> -->
         </div>
     </div>
 </section>
+<script>
+    let co_author = document.getElementById("authors");
+    let co_author_no = 0;
+
+    function fade(i) {
+        if (i % 2 == 0) {
+            return "fade-left";
+        }
+        else {
+            return "fade-right";
+        }
+    }
+
+    function makeid(length) {
+        let result = '';
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const charactersLength = characters.length;
+        let counter = 0;
+        while (counter < length) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            counter += 1;
+        }
+        return result;
+    }
+
+    let children = Array();
+    function contains_div(a, obj) {
+        for (var i = 0; i < a.length; i++) {
+            if (a[i] === obj) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    function deleteauthor(divid) {
+        //console.log("Called:" + divid);
+        var elem = document.getElementById(divid);
+        elem.parentNode.removeChild(elem);
+        let d = contains_div(children, divid);
+        if (d != -1) {
+            // delete children[d];
+            children = children.filter(function (el) {
+                return el != divid;
+            });
+        }
+        //console.log(children);
+    }
+    function addauthor() {
+        var div = document.createElement("div");
+        co_author_no = co_author_no + 1;
+        let divid = makeid(10);
+        div.innerHTML = "<div class=\"col-md-6\" data-aos=\"" + fade(children.length)
+            + "\" data-aos-delay=\"100\" id=\"" + divid + "\"><div class=\"card\">"
+            + "<div class=\"card-body\"><div class=\"table-responsive\">"
+            + "<div class=\"d-flex justify-content-between\"><div></div><b>Co-Author Details "
+            // +"("+ co_author_no + ")"
+            +":</b><div><a onclick=\"deleteauthor('"
+            + divid + "')\"><div class=\"text-white bg-dark\">&nbsp;"
+            +"<i class=\"bi bi-x-circle\"></i>&nbsp;</div></a></div></div>" 
+            + html + "</div></div></div></div>";
+        children.push(divid);
+        co_author.append(div.children[0]);
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+</script>
 {% endblock %}

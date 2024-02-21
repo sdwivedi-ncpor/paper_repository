@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<!-- ======= Contact Section ======= -->
+<section id="contact" class="contact">
+    <div class="container" data-aos="fade-up">
+        <div class="section-title">
+            <h2>Paper</h2>
+            <p>{{paper.title}}</p>
+        </div>
+        <div>
+            <p>{{paper.description}}</p>
+        </div>
+        <div class="row mt-5">
+            <div class="col-lg-4">
+                <div class="info">
+                    <div class="publication">
+                        <i class="bi bi-journal"></i>
+                        <h4>Publication:</h4>
+                        <p>{{paper.publication}}</p>
+                    </div>
+                    <div class="calendar-date">
+                        <i class="bi bi-calendar-date"></i>
+                        <h4>Publication Date:</h4>
+                        <p>{{paper.publication_date}}</p>
+                    </div>
+                    <div class="link">
+                        <i class="bi bi-link"></i>
+                        <h4>DOI:</h4>
+                        <p>{{paper.doi}}</p>
+                    </div>
+                    <div class="citation">
+                        <i class="bi bi-123"></i>
+                        <h4>Citation:</h4>
+                        <p>{{paper.citation}}</p>
+                    </div>
+                    <div class="impact">
+                        <i class="bi bi-activity"></i>
+                        <h4>Impact Factor:</h4>
+                        <p>{{paper.impact_factor}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8 mt-5 mt-lg-0">
+                <div class="row d-flex justify-content-center">
+                    {% for author in authors %}
+                    <div class="col-md-6">
+                        <table class="table caption-top table-bordered">
+                            <caption class="text-center">
+                                {{author.get_author_type_display}}
+                            </caption>
+                            <tr>
+                                <th><i class="bi bi-person"></i></th>
+                                <td>{{author.first_name}} {{author.last_name}}</td>
+                            </tr>
+                            <tr>
+                                <th><i class="bi bi-envelope-at"></i></th>
+                                <td>{{author.email}}</td>
+                            </tr>
+                            <tr>
+                                <th><i class="bi bi-phone"></i></th>
+                                <td>{{author.phone}}</td>
+                            </tr>
+                            <tr>
+                                <th><i class="bi bi-person-bounding-box"></i></th>
+                                <td>{{author.profile}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section><!-- End Contact Section -->
+{% endblock %}

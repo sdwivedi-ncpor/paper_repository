@@ -1,10 +1,21 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 from .forms import PaperForm, AuthorForm
 from .models import Paper, Author
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 
 def papers(request):
-    return render(request, 'paper.html', {})
+    paper = Paper.objects.all()
+    authors = Author.objects.all()
+    context = {"papers": paper, "authors":authors}
+    return render(request, 'paper.html', context)
+
+def paperDetails(request, pk):
+    paper = Paper.objects.get(pk=pk)
+    authors = Author.objects.filter(paper=paper)
+    context={"paper":paper, "authors":authors}
+    return render(request, "paperdetails.html", context)
+
 
 @login_required
 def addPaper(request):
@@ -44,6 +55,10 @@ def savePaper(request):
                                 phone=phone[count],paper=paper,author_type=author_type)
                 print(author.paper.pk)
                 author.save()
+                paper.authors.add(author)
         except Exception as e:
             return HttpResponse("Error: "+e+"\n <input type=button value=\"Previous Page\" onClick=\"javascript:history.go(-1);\">")
-    return HttpResponse("<input type=button value=\"Previous Page\" onClick=\"javascript:history.go(-1);\">")
+        return redirect(reverse('paperdetails', kwargs={'pk' : paper.pk}))
+    else:
+        return redirect('/')
+    #return HttpResponse("<input type=button value=\"Previous Page\" onClick=\"javascript:history.go(-1);\">")

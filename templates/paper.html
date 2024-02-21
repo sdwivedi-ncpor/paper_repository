@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load author_filter %}
 {% block content %}
 <main id="main">
     <br>
@@ -8,17 +9,38 @@
         <div class="container" data-aos="fade-up">
 
             <div class="row">
-                <div class="col-lg-4 order-1 order-lg-2" data-aos="fade-left" data-aos-delay="100">
-                    <img src="{% static '/img/NCPOR.png' %}" class="img-fluid" alt="">
+                <div class="col-lg-3 order-1 order-lg-2" data-aos="fade-left" data-aos-delay="100">
+                    Search Bar
                 </div>
-                <div class="col-lg-8 pt-4 pt-lg-0 order-2 order-lg-1 content" data-aos="fade-right"
+                <div class="col-lg-9 pt-4 pt-lg-0 order-2 order-lg-1 content" data-aos="fade-right"
                     data-aos-delay="100">
-                    
-                    {% if user.is_authenticated %}
-                    <p>
-                        <a href="{% url 'addpaper' %}"><button>Add New Paper</button></a>
-                    </p>
-                    {% endif %}
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tr>
+                                <th width="20px">#</th>
+                                <th>Title</th>
+                                <th>Publication</th>
+                                <th>Publication Date</th>
+                                <th>First Author</th>
+                                <th>Citation</th>
+                                <th>Impact Factor</th>
+                            </tr>
+                            {% for paper in papers %}
+                            <tr>
+                                <th>{{ forloop.counter }}</th>
+                                <td><a href="{% url 'paperdetails' paper.pk %}" class="link-primary">{{paper.title}}</a>
+                                </td>
+                                <td>{{paper.publication}}</td>
+                                <td>{{paper.get_publication_date}}</td>
+                                {% for author in authors|author_first_filter:paper %}
+                                <td>{{author.first_name}} {{author.last_name}}</td>
+                                {% endfor %}
+                                <td>{{paper.citation}}</td>
+                                <td>{{paper.impact_factor}}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
                 </div>
             </div>
 

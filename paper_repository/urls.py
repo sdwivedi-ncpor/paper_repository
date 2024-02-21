@@ -20,7 +20,7 @@ from . import views
 from papers import urls as paperurls
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.views.generic.base import RedirectView
-from site_management.forms import UserLoginForm, UserPassworChangeForm
+from .forms import UserLoginForm, UserPassworChangeForm
 from django.contrib.auth import views as authview
 from django.conf import settings
 from django.contrib.auth.decorators import login_required

@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'site_management',
     'papers'
 ]
 
@@ -52,6 +51,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django_session_timeout.middleware.SessionTimeoutMiddleware',
 ]
 
 ROOT_URLCONF = 'paper_repository.urls'
@@ -74,11 +75,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'paper_repository.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-AUTH_USER_MODEL = 'site_management.CustomUsers'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -147,4 +143,11 @@ STATIC_ROOT = BASE_DIR / 'prodstatic'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Sessions Settigns
+
+SESSION_EXPIRE_SECONDS = 3600  # 1 hour
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY_GRACE_PERIOD = 60 # group by minute
+SESSION_TIMEOUT_REDIRECT = '/accounts/login/'
 
