@@ -11,11 +11,12 @@ class Paper(models.Model):
     impact_factor = models.FloatField(null=True, blank=True)
     def __str__(self):
         return self.title + ' | ' + self.publication
-    class Meta:
-        ordering = ('date_created',)
     def get_publication_date(self):
         from datetime import datetime # idk if this is required, I assume so?
         return self.publication_date.strftime("%d-%b-%Y")
+    
+    class Meta:
+        ordering = ('date_created',)
     
 class Author(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
@@ -24,7 +25,7 @@ class Author(models.Model):
     email = models.EmailField(null=False, blank=False)
     profile = models.URLField(null=True, blank=True)
     phone = models.IntegerField(null=True, blank=True)
-    paper = models.ForeignKey(Paper, on_delete=models.PROTECT,null=False, blank=False)
+    paper = models.ForeignKey(Paper, on_delete=models.CASCADE,null=False, blank=False)
     author_type_choices = {
         "FIRST":"First Author",
         "CO":"Co-Author"
@@ -34,5 +35,6 @@ class Author(models.Model):
                   default="CO")
     def __str__(self):
         return self.first_name + ' ' + self.last_name + ' | ' + self.author_type_choices[self.author_type]
+    
     class Meta:
         ordering = ('date_created',)

@@ -24,6 +24,9 @@ from .forms import UserLoginForm, UserPassworChangeForm
 from django.contrib.auth import views as authview
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.conf.urls import handler500
+
+#handler500 = 'paper_repository.views.custom_500'
 
 urlpatterns = [    
     path('accounts/login/',

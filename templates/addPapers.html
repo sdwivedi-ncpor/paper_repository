@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <script>
-    let html = `<table class="table">{{authorForm.as_table}}</table>`
+    let html = `<table class="table">{{sample_author_form.as_table}}</table>`
 </script>
 <section id="about" class="about">
     <div class="container" data-aos="fade-up">
@@ -31,19 +31,40 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="row" id="authors">
-                        <div class="col-md-6">
+                    <div class="row justify-content-center" id="authors">
+                        {% for auth in authorForm %}
+                        <div class="col-md-6" id="div_{{forloop.counter}}"  data-aos="fade-left" data-aos-delay="100">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <div class="text-center"><b>First Author Details</b></div>
+                                        {% if forloop.counter == 1 %}
+                                        <div class="d-flex justify-content-between">
+                                            <div></div>
+                                            <b>First Author Details</b>
+                                            <div></div>
+                                        </div>
+                                        {% else %}
+                                        <div class="d-flex justify-content-between">
+                                            <div></div>
+                                            <b>Co-Author Details</b>
+                                            <div>
+                                                <a
+                                                    onclick='deleteAuthor("div_{{forloop.counter}}","{{auth.id.value}}")'>
+                                                    <div class="text-white bg-dark">&nbsp;
+                                                        <i class="bi bi-x-circle"></i>&nbsp;
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        {% endif %}
                                         <table class="table">
-                                            {{authorForm.as_table}}
+                                            {{auth.as_table}}
                                         </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        {% endfor %}
                     </div>
                     <br>
                     <hr>
@@ -112,13 +133,21 @@
             + "<div class=\"card-body\"><div class=\"table-responsive\">"
             + "<div class=\"d-flex justify-content-between\"><div></div><b>Co-Author Details "
             // +"("+ co_author_no + ")"
-            +":</b><div><a onclick=\"deleteauthor('"
+            + ":</b><div><a onclick=\"deleteauthor('"
             + divid + "')\"><div class=\"text-white bg-dark\">&nbsp;"
-            +"<i class=\"bi bi-x-circle\"></i>&nbsp;</div></a></div></div>" 
+            + "<i class=\"bi bi-x-circle\"></i>&nbsp;</div></a></div></div>"
             + html + "</div></div></div></div>";
         children.push(divid);
         co_author.append(div.children[0]);
         window.scrollTo(0, document.body.scrollHeight);
+    }
+    async function deleteAuthor(divid, pk) {
+        if (confirm("Are You Sure")) {
+            const response = await fetch("/paper/delete/"+pk);
+            if(response.status == 200){
+                deleteauthor(divid);
+            }
+        }
     }
 </script>
 {% endblock %}

@@ -14,33 +14,34 @@
                 </div>
                 <div class="col-lg-9 pt-4 pt-lg-0 order-2 order-lg-1 content" data-aos="fade-right"
                     data-aos-delay="100">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <tr>
-                                <th width="20px">#</th>
-                                <th>Title</th>
-                                <th>Publication</th>
-                                <th>Publication Date</th>
-                                <th>First Author</th>
-                                <th>Citation</th>
-                                <th>Impact Factor</th>
-                            </tr>
-                            {% for paper in papers %}
-                            <tr>
-                                <th>{{ forloop.counter }}</th>
-                                <td><a href="{% url 'paperdetails' paper.pk %}" class="link-primary">{{paper.title}}</a>
-                                </td>
-                                <td>{{paper.publication}}</td>
-                                <td>{{paper.get_publication_date}}</td>
-                                {% for author in authors|author_first_filter:paper %}
-                                <td>{{author.first_name}} {{author.last_name}}</td>
-                                {% endfor %}
-                                <td>{{paper.citation}}</td>
-                                <td>{{paper.impact_factor}}</td>
-                            </tr>
-                            {% endfor %}
-                        </table>
+                    {% for paper in papers %}
+                    <div class="card mb-3">
+                        <div class="row g-0">
+                            <div class="col-md-4 text-center"><br>
+                                <div class="col-xl-12 col-md-12">
+                                    {{paper.citation}}
+                                    <p><b>Citation</b></p>
+                                </div><br>
+                                <div class="col-xl-12 col-md-12">
+                                    {{paper.impact_factor}}
+                                    <p><b>Impact Factor</b></p>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title"><a href="{% url 'paperdetails' paper.pk %}" class="link-primary">{{paper.title}}</a></h5>
+                                    <p class="card-text"><small class="text-muted"></small>{{paper.publication}}</p>
+                                    <p class="card-text">First Author:
+                                        {% for author in authors|author_first_filter:paper %}
+                                        {{author.first_name}} {{author.last_name}}
+                                        {% endfor %}
+                                    </p>
+                                    <p class="card-text"><small class="text-muted">{{paper.get_publication_date}}</small></p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    {% endfor %}
                 </div>
             </div>
 

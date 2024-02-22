@@ -7,3 +7,6 @@ def homepage(request):
     author = Author.objects.values('email').distinct().count()
     context = {"papers":papers,"publications":publication, "authors":author}
     return render(request,"home.html",context)
+
+def custom_500(request):
+    return render(request, '500.html', status=500)
