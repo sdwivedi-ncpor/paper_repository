@@ -8,4 +8,5 @@ urlpatterns = [
     path('save',views.savePaper,name="savepaper"),
     path('<int:pk>', views.paperDetails, name="paperdetails"),
     path('delete/<int:pk>', views.deleteAuthor, name="deleteauthor"),
+    path('search/<str:search>', views.searchfun, name="search"),
 ]

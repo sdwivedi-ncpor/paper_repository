@@ -95,3 +95,7 @@ def deleteAuthor(request,pk):
         return HttpResponse("Deleted")
     else:
         return HttpResponse(status=500)
+    
+def searchfun(request, search):
+    queryset = Paper.objects.filter(publication__icontains=search)
+    return HttpResponse(queryset)
