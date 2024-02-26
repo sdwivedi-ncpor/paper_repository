@@ -3,10 +3,15 @@ from .forms import PaperForm, AuthorForm
 from .models import Paper, Author
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from django.core.paginator import Paginator
 
 def papers(request):
-    paper = Paper.objects.all()
+    paper_obj = Paper.objects.all()
     authors = Author.objects.all()
+    paginator = Paginator(paper_obj, 2)
+
+    page_number = request.GET.get("page")
+    paper = paginator.get_page(page_number)
     context = {"papers": paper, "authors":authors}
     return render(request, 'paper.html', context)
 
@@ -49,7 +54,7 @@ def savePaper(request):
         impact_factor = request.POST["impact_factor"]
         id = request.POST.getlist('id')
         try:
-            if id[0] is '':
+            if id[0] == '':
                 paper = Paper(title=title,description=description,
                           publication_date=publication_date,
                           publication=publication,doi=doi,
@@ -71,7 +76,7 @@ def savePaper(request):
                 author_type = "CO"
                 if count==0:
                     author_type = "FIRST"
-                if id[count] is '':
+                if id[count] == '':
                     author = Author(first_name=first_name[count],last_name=last_name[count],
                                 email=email[count], profile=profile[count],
                                 phone=phone[count],paper=paper,author_type=author_type)
