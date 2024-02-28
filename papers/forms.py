@@ -13,7 +13,10 @@ class PaperForm(forms.ModelForm):
     description = forms.CharField(label="Description", widget=forms.Textarea(attrs={'class':"form-control"}))
     publication_date = forms.DateField(label="Date of Publish", widget=forms.DateInput(attrs={'type': 'date','class':"form-control"}))
     publication = forms.CharField(label="Publication", widget=forms.TextInput(attrs={'class':"form-control"}))
-    doi = forms.CharField(label="DOI", widget=forms.TextInput(attrs={'class':"form-control"}))
+    doi = forms.CharField(label="DOI", widget=forms.URLInput(attrs=
+        {'class':"form-control",
+         'placeholder':"DOI should start with https://www.doi.org/",
+         'value':'https://www.doi.org/'}))
     citation = forms.FloatField(label="Citation", widget=forms.NumberInput(attrs={'class':"form-control",'step': 0.1}))
     impact_factor = forms.FloatField(label="Impact Factor", widget=forms.NumberInput(attrs={'class':"form-control",'step': 0.1}))
     

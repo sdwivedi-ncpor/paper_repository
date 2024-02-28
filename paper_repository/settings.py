@@ -50,7 +50,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django_session_timeout.middleware.SessionTimeoutMiddleware',
 ]
@@ -137,7 +136,7 @@ STATICFILES_DIRS = [
 
 STATIC_URL = 'static/'
 
-STATIC_ROOT = BASE_DIR / 'prodstatic'
+#STATIC_ROOT = BASE_DIR / 'prodstatic'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

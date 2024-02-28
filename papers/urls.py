@@ -9,4 +9,5 @@ urlpatterns = [
     path('<int:pk>', views.paperDetails, name="paperdetails"),
     path('delete/<int:pk>', views.deleteAuthor, name="deleteauthor"),
     path('search/<str:search>', views.searchfun, name="search"),
+    path('import', views.importfile, name="importfile"),
 ]

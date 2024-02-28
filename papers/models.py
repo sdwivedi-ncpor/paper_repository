@@ -6,7 +6,7 @@ class Paper(models.Model):
     description = models.TextField(null=True, blank=True)
     publication_date = models.DateField(null=False, blank=False)
     publication = models.CharField(null=False, blank=False)
-    doi = models.CharField(null=True, blank=True)
+    doi = models.URLField(null=True, blank=True)
     citation = models.FloatField(null=True, blank=True)
     impact_factor = models.FloatField(null=True, blank=True)
     def __str__(self):
@@ -16,7 +16,7 @@ class Paper(models.Model):
         return self.publication_date.strftime("%d-%b-%Y")
     
     class Meta:
-        ordering = ('date_created',)
+        ordering = ('-date_created',)
     
 class Author(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)

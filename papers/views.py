@@ -4,15 +4,21 @@ from .models import Paper, Author
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.core.paginator import Paginator
+from django.contrib import messages
 
 def papers(request):
-    paper_obj = Paper.objects.all()
+    title = request.GET.get('title',"")
+    publication = request.GET.get('publication',"")
+    author = request.GET.get('author',"")
+    author_type = request.GET.get('author_type', "")
+    if author_type == "ANY":
+        author_type = ""
+    paper_obj = Paper.objects.filter(title__icontains=title).filter(publication__icontains=publication).order_by("publication").order_by('-date_created')
     authors = Author.objects.all()
-    paginator = Paginator(paper_obj, 2)
-
+    paginator = Paginator(paper_obj, 10)
     page_number = request.GET.get("page")
     paper = paginator.get_page(page_number)
-    context = {"papers": paper, "authors":authors}
+    context = {"papers": paper, "authors":authors, "title":title, "publication":publication, "author":author, "author_type":author_type}
     return render(request, 'paper.html', context)
 
 def paperDetails(request, pk):
@@ -104,3 +110,11 @@ def deleteAuthor(request,pk):
 def searchfun(request, search):
     queryset = Paper.objects.filter(publication__icontains=search)
     return HttpResponse(queryset)
+
+@login_required
+def importfile(request):
+    if request.method == 'POST':
+        messages.warning(request, "Your account expires in three days.")
+        messages.error(request, "Error. Message not sent.")
+    context={}
+    return render(request, 'import.html',context)

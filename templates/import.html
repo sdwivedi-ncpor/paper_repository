@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+{% load author_filter %}
+{% block content %}
+<main id="main">
+    <!-- ======= About Section ======= -->
+    <section id="about" class="about d-flex justify-content-center">
+        <div class="container" data-aos="fade-up">
+
+            <div class="row gy-4 mt-5 justify-content-center">
+                <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content justify-content-center"
+                    data-aos="fade-right" data-aos-delay="100">
+                    <form method="POST">
+                        <div class="card">
+                            <div class="card-header">
+                                Import Excel file
+                            </div>
+                            <div class="card-body">
+                                {% csrf_token %}
+                                <label for="file" class="form-label">Select File:</label>
+                                <input type="file" class="form-control" name="file" id="file" required accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-primary">Import</button>
+                                {% if messages %}
+                                <ul class="messages">
+                                    <br>
+                                    {% for message in messages %}
+                                    <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </section><!-- End About Section -->
+</main>
+{% endblock %}
