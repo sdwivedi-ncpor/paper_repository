@@ -16,7 +16,8 @@
             <div class="col-xl-2 col-md-4">
                 <div class="icon-box">
                     <i class="ri-store-line"></i>
-                    <h3><a href="{% url 'publicationpage' %}">{{publications}}<br>Publications</a></h3>
+                    <h3><a data-bs-toggle="modal"
+                            data-bs-target="#publication_search">{{publications}}<br>Publications</a></h3>
                 </div>
             </div>
             <div class="col-xl-2 col-md-4">
@@ -28,7 +29,8 @@
             <div class="col-xl-2 col-md-4">
                 <div class="icon-box">
                     <i class="ri-calendar-todo-line"></i>
-                    <h3><a href="{% url 'authorpage' %}">{{authors}}<br>Authors</a></h3>
+                    <h3><a data-bs-toggle="modal"
+                        data-bs-target="#author_search">{{authors}}<br>Authors</a></h3>
                 </div>
             </div>
             <!-- <div class="col-xl-2 col-md-4">
@@ -44,7 +46,59 @@
                 </div>
             </div> -->
         </div>
-
     </div>
 </section><!-- End Hero -->
+<!-- Modal -->
+<div class="modal fade" id="publication_search" tabindex="-1" aria-labelledby="publication_searchLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{% url 'publicationpage' %}" method="GET">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="publication_searchLabel">Publications:</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input class="form-control" name="pub_search" list="pubdatalistOptions" id="exampleDataList"
+                        placeholder="Type to search...">
+                    <datalist id="pubdatalistOptions">
+                        {% for p in publication_list %}
+                        <option value="{{p.publication}}">{{p.publication}}</option>
+                        {% endfor %}
+                    </datalist>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="author_search" tabindex="-1" aria-labelledby="author_searchLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{% url 'authorpage' %}" method="GET">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="author_searchLabel">Authors:</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input class="form-control" name="auth_search" list="authdatalistOptions" id="exampleDataList"
+                        placeholder="Type to search...">
+                    <datalist id="authdatalistOptions">
+                        {% for p in author_list %}
+                        <option value="{{p.full_name}}">{{p.full_name}}</option>
+                        {% endfor %}
+                    </datalist>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

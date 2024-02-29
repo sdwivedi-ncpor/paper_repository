@@ -17,14 +17,14 @@
                     <a class="nav-link {% if url_name == 'paper' or url_name == 'paperdetails'%}active{% endif %}"
                         href="{% url 'paper' %}">Papers</a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link {% if url_name == 'publicationpage'%}active{% endif %}"
                         href="{% url 'publicationpage' %}">Publication</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {% if url_name == 'authorpage'%}active{% endif %}"
                         href="{% url 'authorpage' %}">Author</a>
-                </li>
+                </li> -->
                 {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"

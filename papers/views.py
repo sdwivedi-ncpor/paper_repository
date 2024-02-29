@@ -144,7 +144,7 @@ def publicationpage(request):
     paginator = Paginator(paper_obj, 10)
     page_number = request.GET.get("page")
     paper = paginator.get_page(page_number)
-    context = {"publication":publication, 'papers': paper, 'authors':author, 'pub_search':pub_search}
+    context = {"publication":publication, 'papers': paper, 'authors':author}
     return render(request, 'publication.html', context)
 
 def authorpage(request):
@@ -180,7 +180,6 @@ def authorpage(request):
     context = {"author_list":author_list, 
         'paper_first': paper_first,
         'paper_co':paper_co, 'authors':author,
-        'auth_search':auth_search,
         'page_number_f':page_number_f,
         'page_number_c':page_number_c}
     return render(request, 'author.html', context)
