@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% load static %}
+{% load author_filter %}
+{% block content %}
+<!-- ======= About Section ======= -->
+<section id="about" class="about">
+    <div class="container" data-aos="fade-up">
+        <div class="row">
+            <div class="col-lg-12 pt-4 pt-lg-0 order-2 order-lg-1 content " data-aos="fade-right" data-aos-delay="100">
+                <form method="GET">
+                    <div class="card">
+                        <div class="card-header">Authors:</div>
+                        <div class="card-body">
+                            <input class="form-control" name="auth_search" list="datalistOptions" id="exampleDataList"
+                                placeholder="Type to search..." value="{{auth_search}}">
+                            <datalist id="datalistOptions">
+                                {% for a in author_list %}
+                                <option value="{{a.full_name}}">{{a.full_name}}</option>
+                                {% endfor %}
+                            </datalist>
+                        </div>
+                        <div class="card-footer"><button class="btn btn-primary">Search</button></div>
+                    </div>
+                </form>
+                <br>
+                {% if paper_first %}
+                <div class="card">
+                    <div class="card-header">Papers Authored:</div>
+                    <div class="card-body">
+                        {% for paper in paper_first %}
+                        <div class="card mb-3">
+                            <div class="row g-0">
+                                <div class="col-md-4 text-center"><br>
+                                    <div class="col-xl-12 col-md-12">
+                                        {{paper.citation}}
+                                        <p><b>Citation</b></p>
+                                    </div><br>
+                                    <div class="col-xl-12 col-md-12">
+                                        {{paper.impact_factor}}
+                                        <p><b>Impact Factor</b></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><a href="{% url 'paperdetails' paper.pk %}"
+                                                class="link-primary">{{paper.title}}</a></h5>
+                                        <p class="card-text"><small class="text-muted"></small>{{paper.publication}}</p>
+                                        <p class="card-text">First Author:
+                                            {% for author in authors|author_first_filter:paper %}
+                                            {{author.first_name}} {{author.last_name}}
+                                            {% endfor %}
+                                        </p>
+                                        <p class="card-text"><small
+                                                class="text-muted">{{paper.get_publication_date}}</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="card-footer">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                {% if paper_first.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page-f=1&auth_search={{auth_search.split|join:"+"}}&page_c={{page_number_c}}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        <!-- <span class="sr-only">begin</span> -->
+                                    </a>
+                                </li> {% endif %}
+
+                                {% for n in paper_first.paginator.page_range %}
+                                {% if paper_first.number == n %}
+                                <li class="page-item active">
+                                    <span class="page-link">{{ n }}</span>
+                                </li>
+                                {% elif n > paper_first.number|add:'-3' and n < paper_first.number|add:'3' %} <li
+                                    class="page-item"><a class="page-link"
+                                        href="?page_f={{ n }}&auth_search={{auth_search.split|join:"+"}}&page_c={{page_number_c}}">{{ n }}</a>
+                                    </li>
+                                    {% endif %}
+                                    {% endfor %}
+
+                                    {% if paper_first.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                            href="?page_f={{ paper_first.paginator.num_pages }}&auth_search={{auth_search.split|join:"+"}}&page_c={{page_number_c}}" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                            <!-- <span class="sr-only">end</span> -->
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                {% endif %}
+                <br>
+                {% if paper_co %}
+                <div class="card">
+                    <div class="card-header">Papers Co-Authored:</div>
+                    <div class="card-body">
+                        {% for paper in paper_co %}
+                        <div class="card mb-3">
+                            <div class="row g-0">
+                                <div class="col-md-4 text-center"><br>
+                                    <div class="col-xl-12 col-md-12">
+                                        {{paper.citation}}
+                                        <p><b>Citation</b></p>
+                                    </div><br>
+                                    <div class="col-xl-12 col-md-12">
+                                        {{paper.impact_factor}}
+                                        <p><b>Impact Factor</b></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><a href="{% url 'paperdetails' paper.pk %}"
+                                                class="link-primary">{{paper.title}}</a></h5>
+                                        <p class="card-text"><small class="text-muted"></small>{{paper.publication}}</p>
+                                        <p class="card-text">First Author:
+                                            {% for author in authors|author_first_filter:paper %}
+                                            {{author.first_name}} {{author.last_name}}
+                                            {% endfor %}
+                                        </p>
+                                        <p class="card-text"><small
+                                                class="text-muted">{{paper.get_publication_date}}</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="card-footer">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                {% if paper_co.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page_c=1&auth_search={{auth_search.split|join:"+"}}&page_f={{page_number_f}}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        <!-- <span class="sr-only">begin</span> -->
+                                    </a>
+                                </li> {% endif %}
+
+                                {% for n in paper_co.paginator.page_range %}
+                                {% if paper_co.number == n %}
+                                <li class="page-item active">
+                                    <span class="page-link">{{ n }}</span>
+                                </li>
+                                {% elif n > paper_co.number|add:'-3' and n < paper_co.number|add:'3' %} <li
+                                    class="page-item"><a class="page-link"
+                                        href="?page_c={{ n }}&auth_search={{auth_search.split|join:"+"}}&page_f={{page_number_f}}">{{ n }}</a>
+                                    </li>
+                                    {% endif %}
+                                    {% endfor %}
+
+                                    {% if paper_co.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                            href="?page_c={{ paper_co.paginator.num_pages }}&auth_search={{auth_search.split|join:"+"}}&page_f={{page_number_f}}" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                            <!-- <span class="sr-only">end</span> -->
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section><!-- End About Section -->
+{% endblock %}

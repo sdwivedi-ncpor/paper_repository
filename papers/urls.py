@@ -10,4 +10,6 @@ urlpatterns = [
     path('delete/<int:pk>', views.deleteAuthor, name="deleteauthor"),
     path('search/<str:search>', views.searchfun, name="search"),
     path('import', views.importfile, name="importfile"),
+    path('pub', views.publicationpage, name="publicationpage"),
+    path('auth', views.authorpage, name="authorpage"),
 ]

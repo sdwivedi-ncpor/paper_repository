@@ -35,6 +35,8 @@ class Author(models.Model):
                   default="CO")
     def __str__(self):
         return self.first_name + ' ' + self.last_name + ' | ' + self.author_type_choices[self.author_type]
+    def get_full_name(self):
+        return self.first_name + ' ' + self.last_name
     
     class Meta:
         ordering = ('date_created',)

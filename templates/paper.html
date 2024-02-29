@@ -16,13 +16,14 @@
                                 <h5 class="card-title">Search</h5>
                                 <div class="card">
                                     <div class="card-body">
-                                        <input type="text" name="title" class="form-control" value="{{title}}" placeholder="Title">
+                                        <input type="text" name="title" class="form-control" value="{{title}}"
+                                            placeholder="Title">
                                         <hr>
-                                        <input type="text" name="publication" class="form-control" value="{{publication}}"
-                                            placeholder="Publication">
+                                        <input type="text" name="publication" class="form-control"
+                                            value="{{publication}}" placeholder="Publication">
                                         <hr>
-                                        <input type="text" name="author" class="form-control" id="author_search" value="{{author}}"
-                                            placeholder="Author">
+                                        <input type="text" name="author" class="form-control" id="author_search"
+                                            value="{{author}}" placeholder="Author">
                                         <input type="radio" name="author_type" id="first" value="FIRST">
                                         <label for="First">First Author</label><br>
                                         <input type="radio" name="author_type" id="CO" value="ANY" checked>
@@ -30,6 +31,7 @@
                                     </div>
                                     <div class="card-footer text-end">
                                         <button class="btn btn-primary">Search</button>
+                                        <a class="btn btn-primary" href="/paper">Reset</a>
                                     </div>
                                 </div>
                             </div>
@@ -38,69 +40,78 @@
                 </div>
                 <div class="col-lg-9 pt-4 pt-lg-0 order-2 order-lg-1 content" data-aos="fade-right"
                     data-aos-delay="100">
-                    {% for paper in papers %}
-                    <div class="card mb-3">
-                        <div class="row g-0">
-                            <div class="col-md-4 text-center"><br>
-                                <div class="col-xl-12 col-md-12">
-                                    {{paper.citation}}
-                                    <p><b>Citation</b></p>
-                                </div><br>
-                                <div class="col-xl-12 col-md-12">
-                                    {{paper.impact_factor}}
-                                    <p><b>Impact Factor</b></p>
+                    <div class="card">
+                        <div class="card-header">Papers</div>
+                        <div class="card-body">
+                            {% for paper in papers %}
+                            <div class="card mb-3">
+                                <div class="row g-0">
+                                    <div class="col-md-4 text-center"><br>
+                                        <div class="col-xl-12 col-md-12">
+                                            {{paper.citation}}
+                                            <p><b>Citation</b></p>
+                                        </div><br>
+                                        <div class="col-xl-12 col-md-12">
+                                            {{paper.impact_factor}}
+                                            <p><b>Impact Factor</b></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><a href="{% url 'paperdetails' paper.pk %}"
+                                                    class="link-primary">{{paper.title}}</a></h5>
+                                            <p class="card-text"><small class="text-muted"></small>{{paper.publication}}
+                                            </p>
+                                            <p class="card-text">First Author:
+                                                {% for author in authors|author_first_filter:paper %}
+                                                {{author.first_name}} {{author.last_name}}
+                                                {% endfor %}
+                                            </p>
+                                            <p class="card-text"><small
+                                                    class="text-muted">{{paper.get_publication_date}}</small></p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title"><a href="{% url 'paperdetails' paper.pk %}"
-                                            class="link-primary">{{paper.title}}</a></h5>
-                                    <p class="card-text"><small class="text-muted"></small>{{paper.publication}}</p>
-                                    <p class="card-text">First Author:
-                                        {% for author in authors|author_first_filter:paper %}
-                                        {{author.first_name}} {{author.last_name}}
+                            {% endfor %}
+                        </div>
+                        <div class="card-footer">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination">
+                                    {% if papers.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=1" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                            <!-- <span class="sr-only">begin</span> -->
+                                        </a>
+                                    </li> {% endif %}
+
+                                    {% for n in papers.paginator.page_range %}
+                                    {% if papers.number == n %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ n }}</span>
+                                    </li>
+                                    {% elif n > papers.number|add:'-3' and n < papers.number|add:'3' %} <li
+                                        class="page-item"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+                                        {% endif %}
                                         {% endfor %}
-                                    </p>
-                                    <p class="card-text"><small
-                                            class="text-muted">{{paper.get_publication_date}}</small></p>
-                                </div>
-                            </div>
+
+                                        {% if papers.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ papers.paginator.num_pages }}"
+                                                aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                                <!-- <span class="sr-only">end</span> -->
+                                            </a>
+                                        </li>
+                                        {% endif %}
+                                </ul>
+                            </nav>
                         </div>
                     </div>
-                    {% endfor %}
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination">
-                            {% if papers.has_previous %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page=1" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                    <!-- <span class="sr-only">begin</span> -->
-                                </a>
-                            </li> {% endif %}
-
-                            {% for n in papers.paginator.page_range %}
-                            {% if papers.number == n %}
-                            <li class="page-item active">
-                                <span class="page-link">{{ n }}</span>
-                            </li>
-                            {% elif n > papers.number|add:'-3' and n < papers.number|add:'3' %} <li class="page-item"><a
-                                    class="page-link" href="?page={{ n }}">{{ n }}</a></li>
-                                {% endif %}
-                                {% endfor %}
-
-                                {% if papers.has_next %}
-                                <li class="page-item">
-                                    <a class="page-link" href="?page={{ papers.paginator.num_pages }}"
-                                        aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                        <!-- <span class="sr-only">end</span> -->
-                                    </a>
-                                </li>
-                                {% endif %}
-                        </ul>
-                    </nav>
                 </div>
             </div>
+        </div>
 
         </div>
     </section><!-- End About Section -->

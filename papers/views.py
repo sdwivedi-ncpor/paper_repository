@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.core.paginator import Paginator
 from django.contrib import messages
+from django.db.models import Value as V
+from django.db.models.functions import Concat
 
 def papers(request):
     title = request.GET.get('title',"")
@@ -13,7 +15,19 @@ def papers(request):
     author_type = request.GET.get('author_type', "")
     if author_type == "ANY":
         author_type = ""
-    paper_obj = Paper.objects.filter(title__icontains=title).filter(publication__icontains=publication).order_by("publication").order_by('-date_created')
+    authors_list = Author.objects\
+        .annotate(full_name=Concat('first_name', V(' '), 'last_name'))\
+        .filter(full_name__icontains=author)\
+        .filter(author_type__icontains=author_type).order_by('-date_created')
+    paper_id = []
+    for auth in authors_list:
+        paper_id.append(auth.paper.pk)
+    paper_obj = Paper.objects\
+        .filter(pk__in=paper_id)\
+        .filter(title__icontains=title)\
+        .filter(publication__icontains=publication)\
+        .order_by("publication")\
+        .order_by('-date_created')
     authors = Author.objects.all()
     paginator = Paginator(paper_obj, 10)
     page_number = request.GET.get("page")
@@ -118,3 +132,55 @@ def importfile(request):
         messages.error(request, "Error. Message not sent.")
     context={}
     return render(request, 'import.html',context)
+
+def publicationpage(request):
+    publications = Paper.objects.values('publication').distinct().order_by('publication')
+    publication = []
+    for pub in publications:
+        publication.append(pub)
+    pub_search = request.GET.get('pub_search','')
+    paper_obj = Paper.objects.filter(publication__icontains=pub_search)
+    author = Author.objects.all()
+    paginator = Paginator(paper_obj, 10)
+    page_number = request.GET.get("page")
+    paper = paginator.get_page(page_number)
+    context = {"publication":publication, 'papers': paper, 'authors':author, 'pub_search':pub_search}
+    return render(request, 'publication.html', context)
+
+def authorpage(request):
+    authors = Author.objects\
+        .annotate(full_name=Concat('first_name', V(' '), 'last_name')).values('full_name').distinct().order_by('full_name')
+    author_list = []
+    for auth in authors:
+        author_list.append(auth)
+    auth_search = request.GET.get('auth_search','')
+    authors_first_list = Author.objects\
+        .annotate(full_name=Concat('first_name', V(' '), 'last_name'))\
+        .filter(full_name__icontains=auth_search)\
+        .filter(author_type__icontains="FIRST").order_by('-date_created')
+    paper_f_id = []
+    for auth in authors_first_list:
+        paper_f_id.append(auth.paper.pk)
+    paper_first_obj = Paper.objects.filter(pk__in=paper_f_id)    
+    paginator = Paginator(paper_first_obj, 5)
+    page_number_f = request.GET.get("page_f")
+    paper_first = paginator.get_page(page_number_f)    
+    authors_co_list = Author.objects\
+        .annotate(full_name=Concat('first_name', V(' '), 'last_name'))\
+        .filter(full_name__icontains=auth_search)\
+        .filter(author_type__icontains="CO").order_by('-date_created')
+    paper_c_id = []
+    for auth in authors_co_list:
+        paper_c_id.append(auth.paper.pk)
+    paper_co_obj = Paper.objects.filter(pk__in=paper_c_id)
+    paginator = Paginator(paper_co_obj, 5)
+    page_number_c = request.GET.get("page_c")
+    paper_co = paginator.get_page(page_number_c)
+    author = Author.objects.all()
+    context = {"author_list":author_list, 
+        'paper_first': paper_first,
+        'paper_co':paper_co, 'authors':author,
+        'auth_search':auth_search,
+        'page_number_f':page_number_f,
+        'page_number_c':page_number_c}
+    return render(request, 'author.html', context)
